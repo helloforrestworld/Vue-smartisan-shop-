@@ -1,6 +1,6 @@
 <template>
   <li class="nav-cart" @mouseenter="showCar" @mouseleave="hideCar">
-    <a href="javascript:;">购物车</a>
+    <a href="javascript:;" class="ball-rect">购物车</a>
     <!--根据class改变颜色-->
     <span class="cart-empty-num" :class="{'cart-num':calTotalCount}">
       <i>{{calTotalCount}}</i>
@@ -49,6 +49,18 @@
         </div>
       </div>
     </div>
+    <!-- 购物车小球 -->
+    <transition
+      name="ball"
+      v-on:before-enter="beforeEnter"
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter"
+      v-bind:css="true"
+    >
+      <div class="addcart-mask" v-show="ball.show" >
+        <img class="mask-item"/>
+      </div>
+    </transition>
   </li>
 </template>
 <script>
@@ -69,6 +81,9 @@ export default {
     },
     carShow(){//购物车是否显示
       return this.$store.state.carShow
+    },
+    ball(){
+      return this.$store.state.ball
     }
   },
   methods: {
@@ -80,9 +95,53 @@ export default {
     },
     hideCar(){//隐藏购物车
       this.$store.commit('hideCar')
+    },
+    // 小球飞入
+    beforeEnter(el){//初始化小球
+      let rect = this.ball.el.getBoundingClientRect() //按钮位置信息
+      let rectEl = document.getElementsByClassName('ball-rect')[0].getBoundingClientRect() //购物车位置信息
+      let ball = document.getElementsByClassName('mask-item')[0]//小球
+      let x = rectEl.left - rect.left  - rect.width/2//购物车 与 按钮 横向距离距离
+      let y = rect.top - rectEl.top   //购物车 与 按钮 纵向距离距离
+      
+      
+      el.style.transform = 'translate3d(0,'+y+'px,0)'
+      ball.style.transform = 'translate3d(-'+x+'px,0,0)'
+      ball.src = this.ball.img
+      
+    },
+    enter(el){
+      let a = el.offsetHeight //让浏览器主动渲染一下
+      let ball = document.getElementsByClassName('mask-item')[0]//小球
+      el.style.transform = 'translate3d(0,0,0)'
+      ball.style.transform = 'translate3d(0,0,0)'
+    },
+    afterEnter(){
+      this.ball.show = false
     }
   },
 }
 </script>
-<style scoped>
+<style>
+/* 小球 */
+.addcart-mask{
+  position: absolute;
+  left:0;
+  top: 0;
+  z-index: 9999;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.mask-item{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.ball-enter-active{
+  transition: 500ms cubic-bezier(.04,.58,.82,1.26);
+}
+.ball-enter-active .mask-item{
+  transition: 500ms cubic-bezier(0,0,1,1);
+}
 </style>

@@ -225,6 +225,7 @@
 /*购物车*/
 
 .nav-cart {
+  position: relative;
   margin-left: 21px;
   width: 61px;
 }
