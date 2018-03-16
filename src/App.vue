@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import headerNav from './components/header'
+import headerNav from './components/headerNav'
 export default {
   name: 'App',
   components: {
