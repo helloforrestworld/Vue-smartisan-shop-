@@ -18,7 +18,7 @@
         </ul>
       </div>
       <div class="item-btns clearfix">
-        <span class="item-gray-btn"><a href="javascript:;" target="_blank">查看详情</a> </span>
+        <span class="item-gray-btn"><router-link :to="{ name: 'item',query:{itemId:item.sku_info[itemIndex].sku_id}}">查看详情</router-link></span>
         <span class="item-blue-btn" @click = "addCarPanelData(item.sku_info[itemIndex])">加入购物车 </span>
       </div>
       <div class="item-price clearfix">
@@ -26,7 +26,7 @@
       </div>
       <div class="discount-icon">false</div>
       <div class="item-cover">
-        <a href="javascript:;" target="_blank"></a>
+        <router-link :to="{ name: 'item',query:{itemId:item.sku_info[itemIndex].sku_id}}"></router-link>
       </div>
     </div>
   </div>
