@@ -3,7 +3,8 @@ import Router from 'vue-router'
 
 import shop from '@/views/shop'
 import item from '@/views/item'
-import shopList from '@/views/shopList'
+import shopList from '@/views/shoplist'
+import checkOut from '@/views/checkout'
 
 import '@/assets/css/app.css'
 
@@ -26,6 +27,11 @@ export default new Router({
       path:'/shopList',
       name:'shopList',
       component:shopList
+    },
+    {
+      path:'/checkOut',
+      name:'checkout',
+      component:checkOut
     }
   ]
 })

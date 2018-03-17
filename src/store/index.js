@@ -12,7 +12,37 @@ let store = new Vuex.Store({
       show:false,
       el:null,
       img:''
-    }
+    },
+    receiveInfo:[
+        {
+            "name": "王某某",
+            "phone": "13811111111",
+            "areaCode": "010",
+            "landLine": "64627856",
+            "provinceId": 110000,
+            "province": "北京市",
+            "cityId": 110100,
+            "city": "市辖区",
+            "countyId": 110106,
+            "county": "海淀区",
+            "add": "海淀公园东七门10号",
+            "default": true
+        },
+        {
+          "name": "李某某",
+          "phone": "13811111111",
+          "areaCode": "010",
+          "landLine": "64627856",
+          "provinceId": 110000,
+          "province": "北京市",
+          "cityId": 110100,
+          "city": "市辖区",
+          "countyId": 110106,
+          "county": "海淀区",
+          "add": "高教大楼五单元777",
+          "default": false
+      }
+    ]
   },
   mutations:{
     addCarPanelData(state,payload){ //添加购物车信息
@@ -152,6 +182,15 @@ let store = new Vuex.Store({
         }
       })
       return price
+    },
+    goodsCheckedData(state){ //被选中的所有商品数据
+      let checkedData = []
+      state.carPanelData.forEach((item)=>{ 
+        if(item.checked){
+          checkedData.push(item)
+        }
+      })
+      return checkedData
     }
   }
 })
