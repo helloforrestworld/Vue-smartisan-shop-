@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import shop from '@/views/shop'
 import item from '@/views/item'
+import shopList from '@/views/shopList'
 
 import '@/assets/css/app.css'
 
@@ -20,6 +21,11 @@ export default new Router({
       path:'/item',
       name:'item',
       component:item
+    },
+    {
+      path:'/shopList',
+      name:'shopList',
+      component:shopList
     }
   ]
 })

@@ -1,5 +1,5 @@
 <template>
-  <li class="nav-cart" @mouseenter="showCar" @mouseleave="hideCar">
+  <li class="nav-cart" @mouseenter="showCar($event)" @mouseleave="hideCar($event)">
     <a href="javascript:;" class="ball-rect">购物车</a>
     <!--根据class改变颜色-->
     <span class="cart-empty-num" :class="{'cart-num':calTotalCount}">
@@ -43,7 +43,7 @@
             <p>共 <strong class="ng-binding">{{calTotalCount}}</strong> 件商品</p>
             <h5>合计：<span class="price-icon">¥</span><span class="price-num ng-binding" ng-bind="cartMenu.totalPrice">{{calTotalPrice}}</span></h5>
             <h6>
-              <a ng-href="http://www.smartisan.com/shop/#/cart" class="nav-cart-btn" href="http://www.smartisan.com/shop/#/cart">去购物车</a>
+              <router-link class="nav-cart-btn" :to="{ name: 'shopList'}">去购物车</router-link>
             </h6>
           </div>
         </div>
@@ -57,7 +57,7 @@
       v-on:after-enter="afterEnter"
       v-bind:css="true"
     >
-      <div class="addcart-mask" v-show="ball.show" >
+      <div class="addcart-mask" v-show="ball.show" @mouseleave="ballLeave">
         <img class="mask-item"/>
       </div>
     </transition>
@@ -67,7 +67,7 @@
 export default {
   name: "carPanel",
   data: () => ({
-
+    mousetoBall:false //防止鼠标移入移动的小球 导致购物车隐藏
   }),
   computed:{
     carPanelData(){ //购物车数据
@@ -90,11 +90,20 @@ export default {
     delCarPanelData(data) {//删除一条数据
       this.$store.commit('delCarPanelData',data)
     },
-    showCar(){//显示购物车
+    showCar(ev){//显示购物车
+      if(ev.offsetX < -300){
+        return
+      }
       this.$store.commit('showCar')
     },
-    hideCar(){//隐藏购物车
-      this.$store.commit('hideCar')
+    hideCar(ev){//隐藏购物车
+      if(!this.mousetoBall){//防止鼠标移入移动的小球 导致购物车隐藏
+        this.$store.commit('hideCar')
+      }
+      this.mousetoBall = false
+    },
+    ballLeave(){//移入并移出了小球
+      this.mousetoBall = true
     },
     // 小球飞入
     beforeEnter(el){//初始化小球

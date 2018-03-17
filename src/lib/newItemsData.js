@@ -160,7 +160,7 @@ let itemsData = [{
   "sub_title": "10000mAh 双向快充、轻盈便携、高标准安全保护",
   "ali_image": "http://image.smartisanos.cn/resource/ae40a16324658c192c7361d829f603bd.jpg",
   "price": 199,
-  "limit_num": 1,
+  "limit_num": 3,
   "spec_json": {
     "image": "attr/v2/1000299/B37F37544921114CEF1EC01ED4DF44E4/",
     "show_name": "灰色"
@@ -172,7 +172,7 @@ let itemsData = [{
     "http://image.smartisanos.cn/resource/40b8c1b1e5d175cc8fa9e7ff96cb6016.jpg",
     "http://image.smartisanos.cn/resource/fb24dc3db26c6f02542e0dea9b10151b.jpg"
   ],
-  "limit_num": 1,
+  "limit_num": 3,
   "sku_list": [{
     "id": 100029901,
     "image": "attr/v2/1000299/B37F37544921114CEF1EC01ED4DF44E4/",

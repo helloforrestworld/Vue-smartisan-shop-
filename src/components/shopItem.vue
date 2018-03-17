@@ -47,7 +47,8 @@ export default {
       this.itemIndex = index
     },
     addCarPanelData(item){
-      this.$store.commit('addCarPanelData',item)
+      let info = {data:item,count:1}
+      this.$store.commit('addCarPanelData',info)
     }
   }
 }

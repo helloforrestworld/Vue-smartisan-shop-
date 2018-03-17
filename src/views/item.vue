@@ -6,7 +6,11 @@
           <div class="gallery">
             <div class="thumbnail">
               <ul>
-                <li :class="{'on':index == curIndex}" v-for="img,index in curData.ali_images">
+                <li
+                 :class="{'on':index == curIndex}"
+                 v-for="img,index in curData.ali_images"
+                 @click = "tabIndex(index)"
+                >
                   <img :src="img+'?x-oss-process=image/resize,w_54/quality,Q_80/format,webp'">
                 </li>
               </ul>
@@ -34,8 +38,10 @@
             <div class="sku-dynamic-params clear">
               <span class="params-name">颜色</span>
               <ul class="params-colors">
-                <li :class="{'cur':itemId === color.id}" v-for="color,index in curData.sku_list">
-                  <a><img :src="'http://img01.smartisanos.cn/'+ color.image +'20X20.jpg'"></a>
+                <li :class="{'cur':itemId == color.id}" v-for="color,index in curData.sku_list">
+                  <router-link :to="{ name: 'item',query:{itemId:color.id}}">
+                    <img :src="'http://img01.smartisanos.cn/'+ color.image +'20X20.jpg'">
+                  </router-link>
                 </li>
               </ul>
             </div>
@@ -43,33 +49,49 @@
               <div class="params-name">数量</div>
               <div class="params-detail clear">
                 <div class="item-num js-select-quantity">
-                  <span class="down down-disabled">-</span>
-                  <span class="num">1</span>
-                  <span class="up up-disabled">+</span>
+                  <!-- down-disabled -->
+                  <span class="down" @click="deCount">-</span>
+                  <span class="num">{{count}}</span>
+                  <span class="up"@click="addCount">+</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="sku-status">
             <div class="cart-operation-wrapper clearfix">
-              <span class="blue-title-btn js-add-cart"><a>加入购物车</a></span>
+              <span 
+                class="blue-title-btn js-add-cart"
+                 @click = "addCarPanelData()"
+              ><a>加入购物车</a></span>
               <span class="gray-title-btn"><a>现在购买</a></span>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <prompt v-show="maxOff"></prompt>
   </div>
 </template>
 <script>
 import itemData from '@/lib/newItemsData.js'
+import prompt from '@/components/prompt'
 export default {
   name: "item",
   data(){
     return {
       itemData,
       itemId:this.$route.query.itemId,
-      curIndex:0
+      curIndex:0,
+      count:1
+    }
+  },
+  components: {
+    prompt
+  },
+  watch:{
+    '$route.query.itemId':function(newV){//切换颜色
+      this.itemId = newV
+      this.curIndex = 0
     }
   },
   computed:{
@@ -79,6 +101,24 @@ export default {
           return Number(item.sku_id) === Number(this.itemId) 
         })[0]
       return curData
+    },
+    maxOff(){//购物车单品数量最大限制
+      return this.$store.state.maxOff
+    }
+  },
+  methods: {
+    tabIndex(index) {//切换细节展示
+      this.curIndex = index
+    },
+    addCarPanelData(){
+      let info = {data:this.curData, count:this.count}
+      this.$store.commit('addCarPanelData',info)
+    },
+    deCount(){//减少购买件数
+      this.count = this.count - 1 <= 1? 1 :  this.count - 1
+    },
+    addCount(){//增加购买件数
+      this.count = this.count + 1 >= this.curData.limit_num? this.curData.limit_num :  this.count + 1
     }
   }
 }
