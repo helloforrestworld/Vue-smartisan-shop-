@@ -6,6 +6,9 @@ import item from '@/views/item'
 import shopList from '@/views/shoplist'
 import checkOut from '@/views/checkout'
 import payment from '@/views/payment'
+import account from '@/views/account'
+import order from '@/views/account/order'
+import ads from '@/views/account/ads'
 
 import '@/assets/css/app.css'
 
@@ -38,6 +41,22 @@ export default new Router({
       path:'/payment',
       name:'payment',
       component:payment
+    },
+    {
+      path:'/account',
+      component:account,
+      children:[
+        {
+          path:'',
+          name:'account',
+          component:order
+        },
+        {
+          path:'address',
+          name:'ads',
+          component:ads
+        }
+      ]
     }
   ]
 })

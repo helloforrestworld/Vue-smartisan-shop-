@@ -16,7 +16,9 @@
                   <dt class="ng-binding">+86 138****9453</dt>
                 </dl>
                 <ul>
-                  <li class="order"><a href="javascript:;">我的订单</a></li>
+                  <router-link class="order" tag="li" :to="{ name: 'account'}">
+                    <a>我的订单</a>
+                  </router-link>
                   <li class="support"><a href="javascript:;">售后服务</a></li>
                   <li class="coupon"><a href="javascript:;">我的优惠</a></li>
                   <li class="information"><a href="javascript:;">账户资料</a></li>

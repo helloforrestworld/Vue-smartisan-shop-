@@ -63,7 +63,7 @@
                 class="blue-title-btn js-add-cart"
                  @click = "addCarPanelData()"
               ><a>加入购物车</a></span>
-              <span class="gray-title-btn"><a>现在购买</a></span>
+              <span class="gray-title-btn"@click="buyNow(curData)"><a>现在购买</a></span>
             </div>
           </div>
         </div>
@@ -119,6 +119,14 @@ export default {
     },
     addCount(){//增加购买件数
       this.count = this.count + 1 >= this.curData.limit_num? this.curData.limit_num :  this.count + 1
+    },
+    buyNow(data){//现在购买
+      let payload = {
+        data:data,
+        count:this.count
+      }
+      this.$store.commit('buyNow',payload)
+      this.$router.push({name:'checkout',query:{now:true}})
     }
   }
 }

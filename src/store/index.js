@@ -6,6 +6,7 @@ Vue.use(Vuex)
 let store = new Vuex.Store({
   state:{
     carPanelData:[],//购物车数据
+    buyNowData:[],//现在购买
     maxOff:false, //超出商品数量上限
     carShow:false,//购物车是否显示
     ball:{//小球信息
@@ -111,6 +112,7 @@ let store = new Vuex.Store({
           if(item.count > item.limit_num){
             item.count--
           }
+          return
         }
       })
     },
@@ -121,6 +123,7 @@ let store = new Vuex.Store({
           if(item.count < 1){
             item.count++
           }
+          return
         }
       })
     },
@@ -128,6 +131,7 @@ let store = new Vuex.Store({
       state.carPanelData.forEach((item)=>{
         if(Number(item.sku_id) === Number(data.sku_id)){
           item.checked = !item.checked
+          return
         }
       })
     },
@@ -144,7 +148,7 @@ let store = new Vuex.Store({
         }
       }
     },
-    saveReceive(state,receive){//提交新的收获地址
+    saveReceive(state,receive){//提交新的收货地址
       if(receive.default){
         state.receiveInfo.forEach((item)=>{
           item.default = false
@@ -152,8 +156,28 @@ let store = new Vuex.Store({
       }
       state.receiveInfo.push(receive)
     },
+    reviseReceive(state,data){//修个某个收货地址
+      state.receiveInfo.forEach((item,index)=>{
+        if(data.receive.default){
+          item.default = false
+        }
+        if(index == data.index){
+          Object.assign(item,data.receive)
+        }
+      })
+    },
+    deleteReceive(state,index){//删除某个收货地址
+      state.receiveInfo = state.receiveInfo.filter((item,i)=>{
+        return i !== index
+      })
+    },
     submitOrder(state,orderData){//提交订单
       state.orderList.unshift(orderData) //添加一条订单
+      
+      if(orderData.goodsData[0].isBuyNow){//现在购买 不清空购物车
+        state.buyNowData = []
+        return
+      }
       
       let index = state.carPanelData.length //清空购物车
       while(index --) {
@@ -161,6 +185,20 @@ let store = new Vuex.Store({
           state.carPanelData.splice(index,1)
         }
       }
+    },
+    orderGetPay(state,id){ //付款
+      state.orderList.forEach((order)=>{
+        if(Number(order.orderId) === Number(id)){
+          order.isPay = true
+          return
+        }
+      })
+    },
+    buyNow(state,payload){//现在购买
+      let data = payload.data
+      Vue.set(data,'count',payload.count)
+      Vue.set(data,'isBuyNow',true)
+      state.buyNowData.push(data)
     }
   },
   getters:{
@@ -210,6 +248,11 @@ let store = new Vuex.Store({
         }
       })
       return checkedData
+    },
+    goodsNowBuyPrice(state){ //点击现在购买商品总价格
+      let price = 0
+      price = state.buyNowData[0].price * state.buyNowData[0].count
+      return price
     }
   }
 })

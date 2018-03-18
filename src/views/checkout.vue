@@ -116,7 +116,7 @@
         </div>
       </div>
     </div>
-    <addressPop v-show="showPop" @close-pop="closePop(false)"></addressPop>
+    <address-pop v-show="showPop" @close-pop="closePop(false)" @save-receive="saveReceive"></address-pop>
   </div>
 </template>
 <script>
@@ -154,9 +154,15 @@ export default {
   },
   computed:{
     goodsCheckedData(){ //被选中的所有商品数据
-      return this.$store.getters.goodsCheckedData
+      if(this.$route.query.now){ //现在购买 不走购物车数据
+        return this.$store.state.buyNowData
+      }
+      return this.$store.getters.goodsCheckedData //购物车数据
     },
     goodsCheckedPrice(){//被选中的商品总价格
+      if(this.$route.query.now){ //现在购买 不走购物车数据
+        return this.$store.getters.goodsNowBuyPrice
+      }
       return this.$store.getters.goodsCheckedPrice
     },
     freight(){ //运费
@@ -179,6 +185,9 @@ export default {
     },
     tabInvoice(boolean){// 个人 公司的发票
       this.invoice.personal = boolean
+    },
+    saveReceive(receive){ //保存地址
+      this.$store.commit('saveReceive',receive)
     },
     submitOrder(){ //提交订单
       if(!this.invoice.personal&& !this.invoice.name.trim()) return //发票信息没填好
