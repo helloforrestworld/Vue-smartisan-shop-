@@ -108,7 +108,10 @@
         </div>
         <div class="box-inner"> 
           <div class="last-payment clear"> 
-            <span class="jianguo-blue-main-btn big-main-btn payment-blue-bt fn-right js-checkout"> <a>提交订单</a> </span> <span class="prices fn-right">应付金额： <em>¥ {{goodsCheckedPrice + freight}}.00</em></span> 
+            <span @click="submitOrder" class="jianguo-blue-main-btn big-main-btn payment-blue-bt fn-right js-checkout"> 
+              <a>提交订单</a>
+             </span> 
+            <span class="prices fn-right">应付金额： <em>¥ {{goodsCheckedPrice + freight}}.00</em></span> 
           </div> 
         </div>
       </div>
@@ -163,7 +166,7 @@ export default {
       }
       return fr
     },
-    receiveInfo(){//收货地址信息
+    receiveInfo(){//收货地址信息集合
       return this.$store.state.receiveInfo
     }
   },
@@ -176,7 +179,41 @@ export default {
     },
     tabInvoice(boolean){// 个人 公司的发票
       this.invoice.personal = boolean
-      console.log(this.invoice)
+    },
+    submitOrder(){ //提交订单
+      if(!this.invoice.personal&& !this.invoice.name.trim()) return //发票信息没填好
+      let receiveFinal = this.receiveInfo[this.receiveIndex] //收货地址
+      let now_date = new Date()//日期
+      let year = now_date.getFullYear()
+      let month = this.addZero(now_date.getMonth() + 1)
+      let date = this.addZero(now_date.getDate())
+      let hours = this.addZero(now_date.getHours())
+      let mins = this.addZero(now_date.getMinutes())
+      let seconds = this.addZero(now_date.getSeconds())
+      let goods = this.goodsCheckedData //商品信息
+      let price = this.goodsCheckedPrice //商品价格
+      let freight = this.freight //运费
+      let invoiceName = this.invoice.name //发票抬头
+      if(this.invoice.personal){
+         invoiceName = '个人'
+      }
+      
+      let orderData = {
+        orderId: now_date.getTime(),
+        goodsData:goods,
+        price:price,
+        freight:freight,
+        invoiceName:invoiceName,
+        receive:receiveFinal,
+        i_date: year + '-' + month + '-' + date + ' --- ' + hours + ':' + mins + ':' + seconds,
+        isPay:false
+      }
+      this.$store.commit('submitOrder',orderData) //提交数据
+      this.$router.push({name:'payment',query:{id:orderData.orderId}})//跳转支付
+      
+    },
+    addZero(val){//补0函数
+      return  val < 10? '0'+ val : val
     }
   }
 }

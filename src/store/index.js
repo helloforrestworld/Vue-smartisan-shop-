@@ -13,7 +13,7 @@ let store = new Vuex.Store({
       el:null,
       img:''
     },
-    receiveInfo:[
+    receiveInfo:[//收货信息
         {
             "name": "王某某",
             "phone": "13811111111",
@@ -42,7 +42,8 @@ let store = new Vuex.Store({
           "add": "高教大楼五单元777",
           "default": false
       }
-    ]
+    ],
+    orderList:[]//订单集合
   },
   mutations:{
     addCarPanelData(state,payload){ //添加购物车信息
@@ -150,6 +151,16 @@ let store = new Vuex.Store({
         })
       }
       state.receiveInfo.push(receive)
+    },
+    submitOrder(state,orderData){//提交订单
+      state.orderList.unshift(orderData) //添加一条订单
+      
+      let index = state.carPanelData.length //清空购物车
+      while(index --) {
+        if(state.carPanelData[index].checked) {
+          state.carPanelData.splice(index,1)
+        }
+      }
     }
   },
   getters:{

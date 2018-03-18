@@ -5,6 +5,7 @@ import shop from '@/views/shop'
 import item from '@/views/item'
 import shopList from '@/views/shoplist'
 import checkOut from '@/views/checkout'
+import payment from '@/views/payment'
 
 import '@/assets/css/app.css'
 
@@ -32,6 +33,11 @@ export default new Router({
       path:'/checkOut',
       name:'checkout',
       component:checkOut
+    },
+    {
+      path:'/payment',
+      name:'payment',
+      component:payment
     }
   ]
 })
