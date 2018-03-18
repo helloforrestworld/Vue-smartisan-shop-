@@ -16,14 +16,14 @@
                             <div class="address-form">
                                 <div class="module-form-row">
                                     <div class="form-item-v3">
-                                        <i>收货人姓名</i>
+                                        <i style="z-index:-1" v-show="receive.name.trim() === ''">收货人姓名</i>
                                         <input type="text" class="js-verify" v-model="receive.name">
                                         <div class="verify-error"></div>
                                     </div>
                                 </div>
                                 <div class="module-form-row">
                                     <div class="form-item-v3" :class="{'form-invalid-item':phoneErr}">
-                                        <i>手机号</i>
+                                        <i style="z-index:-1" v-show="receive.phone.trim() === ''">手机号</i>
                                         <input 
                                           type="text" 
                                           class="js-verify"
@@ -36,13 +36,13 @@
                                 </div>
                                 <div class="module-form-row clear">
                                     <div class="form-item-v3 area-code-w fn-left form-valid-item">
-                                        <i>区号（可选）</i>
+                                        <i style="z-index:-1" v-show="receive.areaCode.trim() === ''">区号（可选）</i>
                                         <input type="text" class="js-verify js-address-area-code"v-model="receive.areaCode">
                                         <div class="verify-error"></div>
                                     </div>
                                     <div class="form-item-v3 telephone-w fn-right form-valid-item">
-                                        <i>固定电话（可选）</i>
-                                        <input type="text" class="js-verify js-address-telephone"v-model="receive.landline">
+                                        <i style="z-index:-1" v-show="receive.landLine.trim() === ''">固定电话（可选）</i>
+                                        <input type="text" class="js-verify js-address-telephone"v-model="receive.landLine">
                                         <div class="verify-error"></div>
                                     </div>
                                 </div>
@@ -57,29 +57,39 @@
                                 <div class="module-form-row clear">
                                     <div class="form-item-v3 select-item city-wrapper fn-left form-focus-item">
                                         <select class="city select-city js-form-city js-verify" v-model="receive.cityId">
-                                            <option value="0">请选择城市</option>
+                                            <option value="0" selected>请选择城市</option>
                                             <option :value="city.area_id" v-for="city,index in cityList">{{city.area_name}}</option>
                                         </select>
                                     </div>
                                     <div class="form-item-v3 select-item district-wrapper fn-right form-focus-item">
                                         <select class="city select-city js-form-city js-verify" v-model="receive.countyId">
-                                            <option value="0">请选择区县</option>
+                                            <option value="0" selected>请选择区县</option>
                                             <option :value="county.area_id" v-for="county,index in countyList">{{county.area_name}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="module-form-row">
                                     <div class="form-item-v3">
-                                        <i>详细地址，如街道名称，楼层，门牌号码等</i>
                                         <input type="text" class="js-verify" v-model="receive.add">
+                                        <i style="z-index:-1" v-show="receive.add.trim() === ''">详细地址，如街道名称，楼层，门牌号码等</i>
                                         <div class="verify-error"></div>
                                     </div>
                                 </div>
                                 <div class="module-form-row fn-clear">
                                     <input type="checkbox" class="hide">
-                                    <span class="blue-checkbox"></span>设为默认
+                                    <span 
+                                      class="blue-checkbox"
+                                      :class="{'checkbox-on':receive.default}"
+                                      @click="setDefault"
+                                    >
+                                    </span>
+                                    默认
                                 </div>
-                                <div class="dialog-blue-btn big-main-btn disabled-btn js-verify-address">
+                                <div 
+                                  class="dialog-blue-btn big-main-btn  js-verify-address"
+                                  :class="{'disabled-btn':!canSave}"
+                                  @click="saveReceiveHandler"
+                                >
                                     <a>保存</a>
                                 </div>
                             </div>
@@ -112,7 +122,31 @@ export default {
         "add": "",
         "default": false
       },
-      phoneErr:false
+      phoneErr:false,
+      canSave:false
+    }
+  },
+  watch:{
+    'receive.provinceId':function(newId){ //下级变回默认
+      this.receive.cityId = 0
+      this.receive.countyId = 0
+    },
+    'receive.cityId':function(newId){ //下级变回默认
+      this.receive.countyId = 0
+    },
+    'receive.countyId':function(newId){ //获取县区名字
+      this.countyList.forEach((item)=>{
+        if(Number(item.area_id) === Number(this.receive.countyId)) {
+          this.receive.county = item.area_name
+          return
+        }
+      })
+    },
+    'receive':{
+      handler(){
+        this.checkCanSave()
+      },
+      deep:true
     }
   },
   computed:{
@@ -120,7 +154,8 @@ export default {
       let cityList = []
       this.provinceList.forEach((item)=>{
         if(Number(item.area_id) === Number(this.receive.provinceId)) {
-          cityList = item.city_list
+          cityList = item.city_list  //当前城市列表
+          this.receive.province = item.area_name //获取省份名字
           return
         }
       })
@@ -130,7 +165,8 @@ export default {
       let countyList = []
       this.cityList.forEach((item)=>{
         if(Number(item.area_id) === Number(this.receive.cityId)) {
-          countyList = item.county_list
+          countyList = item.county_list //当前县区列表
+          this.receive.city = item.area_name //获取城市名字
           return
         }
       })
@@ -144,8 +180,24 @@ export default {
     checkPhone(){//只作了11位的检测
       this.phoneErr =  this.receive.phone.length !== 11
     },
-    detachErr(){
+    detachErr(){ //取消手机号报错
       this.phoneErr = false
+    },
+    setDefault(){//设为默认地址
+      this.receive.default = !this.receive.default
+    },
+    checkCanSave(){//检测是否能保存
+      if(this.receive.name.trim()&&!this.receive.phoneErr&&this.receive.phone.trim()&&this.receive.province&&this.receive.city&&this.receive.county&&this.receive.add.trim()){
+        this.canSave = true
+      }else{
+        this.canSave = false
+      }
+    },
+    saveReceiveHandler(){//保存新的收货地址
+      if(this.canSave){
+        this.$store.commit('saveReceive',this.receive)
+      }
+      this.$emit('close-pop')
     }
   }
 }
@@ -403,5 +455,17 @@ export default {
 }
 .form-item-v3 .verify-error{
   top: 10px;
+}
+#pop .blue-checkbox-new{
+  display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background: url(../assets/img/checkbox-new.png) no-repeat 0 -20px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+#pop .checkbox-on{
+  background: url(../assets/img/checkbox-new.png) no-repeat 0 0;
 }
 </style>

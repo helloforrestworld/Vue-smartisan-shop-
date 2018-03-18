@@ -142,6 +142,14 @@ let store = new Vuex.Store({
           state.carPanelData.splice(index,1)
         }
       }
+    },
+    saveReceive(state,receive){//提交新的收获地址
+      if(receive.default){
+        state.receiveInfo.forEach((item)=>{
+          item.default = false
+        })
+      }
+      state.receiveInfo.push(receive)
     }
   },
   getters:{

@@ -140,6 +140,15 @@ export default {
       }
     })
   },
+  watch:{
+    receiveInfo(){
+      this.receiveInfo.forEach((item, index)=>{ //选中默认地址
+        if(item.default){
+          this.receiveIndex = index
+        }
+      })
+    }
+  },
   computed:{
     goodsCheckedData(){ //被选中的所有商品数据
       return this.$store.getters.goodsCheckedData
@@ -154,7 +163,7 @@ export default {
       }
       return fr
     },
-    receiveInfo(){
+    receiveInfo(){//收货地址信息
       return this.$store.state.receiveInfo
     }
   },
