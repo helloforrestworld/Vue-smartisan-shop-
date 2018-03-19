@@ -116,11 +116,13 @@
         </div>
       </div>
     </div>
+    <prompt tips="公司发票类型必须填写名字" v-show="maxOff"></prompt>
     <address-pop v-show="showPop" @close-pop="closePop(false)" @save-receive="saveReceive"></address-pop>
   </div>
 </template>
 <script>
 import addressPop from '@/components/addresspop' //填写收货信息组件
+import prompt from '@/components/prompt' //提醒框
 export default {
   name: "checkout",
   data(){
@@ -134,7 +136,8 @@ export default {
     }
   },
   components: {
-    addressPop
+    addressPop,
+    prompt
   },
   created() {
     this.receiveInfo.forEach((item, index)=>{ //选中默认地址
@@ -174,6 +177,9 @@ export default {
     },
     receiveInfo(){//收货地址信息集合
       return this.$store.state.receiveInfo
+    },
+    maxOff(){//控制提醒框闭合
+      return this.$store.state.maxOff
     }
   },
   methods: {
@@ -190,7 +196,10 @@ export default {
       this.$store.commit('saveReceive',receive)
     },
     submitOrder(){ //提交订单
-      if(!this.invoice.personal&& !this.invoice.name.trim()) return //发票信息没填好
+      if(!this.invoice.personal&& !this.invoice.name.trim()) {
+        this.$store.commit('openPrompt')
+        return //发票信息没填好
+      }
       let receiveFinal = this.receiveInfo[this.receiveIndex] //收货地址
       let now_date = new Date()//日期
       let year = now_date.getFullYear()

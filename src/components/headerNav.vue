@@ -19,11 +19,9 @@
                   <router-link class="order" tag="li" :to="{ name: 'account'}">
                     <a>我的订单</a>
                   </router-link>
-                  <li class="support"><a href="javascript:;">售后服务</a></li>
-                  <li class="coupon"><a href="javascript:;">我的优惠</a></li>
-                  <li class="information"><a href="javascript:;">账户资料</a></li>
-                  <li class="address"><a href="javascript:;">收货地址</a></li>
-                  <li class="logout"><a href="javascript:;">退出</a></li>
+                  <router-link class="address" tag="li" :to="{ name: 'ads'}">
+                    <a>收货地址</a>
+                  </router-link>
                 </ul>
               </div>
             </div>

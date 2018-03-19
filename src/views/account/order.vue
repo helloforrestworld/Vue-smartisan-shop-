@@ -47,7 +47,12 @@
                   </div>
                   <div class="items-params clear">
                     <div class="name vh-center">
-                      <a href="javascript:;" target="_blank" :title="item.title+'('+ item.spec_json.show_name +')'">{{item.title+'('+ item.spec_json.show_name +')'}}</a>
+                      <router-link 
+                        :to="{ name: 'item', query: { itemId: item.sku_id}}"
+                        :title="item.title+'('+ item.spec_json.show_name +')'"
+                      >
+                        {{item.title+'('+ item.spec_json.show_name +')'}}
+                      </router-link>
                     </div>
                     <div class="detail"></div>
                   </div>

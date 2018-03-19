@@ -57,6 +57,10 @@ export default new Router({
           component:ads
         }
       ]
+    },
+    {
+      path:'*',
+      redirect:'/'
     }
   ]
 })

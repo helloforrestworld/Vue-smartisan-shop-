@@ -24,7 +24,7 @@
               <div class="default fn-right" v-show="receive.default">  （默认地址）  </div>
               <div class="telephone fn-right">{{receive.phone}}</div>
             </div>
-            <address-pop :revise-receive="curReceive" @save-receive="saveReceive" @close-pop="close" v-show="showPop"></address-pop>
+            <address-pop :revise-receive="curReceive" @save-receive="saveReceive" @close-pop="close" v-if="showPop"></address-pop>
           </div>
         </div>
       </div>
@@ -68,7 +68,6 @@ export default {
     saveReceive(receive){ //修改或者新增handler
       if(this.Revising.isRevising){ //修改
         this.$store.commit('reviseReceive',{receive,index:this.Revising.index})
-        this.Revising.isRevising = false
       }else{                  //新增
         this.$store.commit('saveReceive',receive)
       }

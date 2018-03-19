@@ -134,21 +134,14 @@ export default {
   },
   watch:{
     'receive.provinceId':function(newId){ //下级变回默认
-      if(Number(newId) === 0){
-        this.receive.cityId = 0
-        this.receive.countyId = 0
-      }
+      this.receive.cityId = 0
+      this.receive.countyId = 0
     },
     'receive.cityId':function(newId){ //下级变回默认
-      if(Number(newId) === 0){
-        this.receive.countyId = 0
-      }
+      this.receive.countyId = 0
     },
     'receive.countyId':function(newId){ //获取县区名字
-      if(Number(newId) === 0){
-          this.receive.county = ''
-          return
-      }
+      
       this.countyList.forEach((item)=>{
         if(Number(item.area_id) === Number(this.receive.countyId)) {
           this.receive.county = item.area_name
@@ -169,10 +162,7 @@ export default {
     },
     cityList(){ //当前省份 城市信息
       let cityList = []
-      if(Number(this.receive.provinceId) === 0){
-          this.receive.province = ''
-          return cityList
-      }
+      
       this.provinceList.forEach((item)=>{
         if(Number(item.area_id) === Number(this.receive.provinceId)) {
           cityList = item.city_list  //当前城市列表
@@ -184,10 +174,7 @@ export default {
     },
     countyList(){//当前城市 区县信息
       let countyList = []
-      if(Number(this.receive.cityId) === 0){
-          this.receive.city = ''
-          return countyList
-      }
+      
       this.cityList.forEach((item)=>{
         if(Number(item.area_id) === Number(this.receive.cityId)) {
           countyList = item.county_list //当前县区列表
@@ -227,7 +214,7 @@ export default {
       this.receive.default = !this.receive.default
     },
     checkCanSave(){//检测是否能保存
-      if(this.receive.name.trim()&&!this.phoneErr&&this.receive.phone.trim()&&this.receive.province&&this.receive.city&&this.receive.county&&this.receive.add.trim()){
+      if(this.receive.name.trim()&&!this.phoneErr&&this.receive.phone.trim()&&this.receive.provinceId!=0&&this.receive.cityId!=0&&this.receive.countyId!=0&&this.receive.add.trim()){
         this.canSave = true
       }else{
         this.canSave = false

@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <prompt v-show="maxOff"></prompt>
+    <prompt tips="商品数量超过上限,无法继续添加！" v-show="maxOff"></prompt>
   </div>
 </template>
 <script>

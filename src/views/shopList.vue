@@ -37,7 +37,7 @@
                     </div>
                     <div class="name hide-row" >
                       <div class="name-table">
-                        <a href="javascript:;" target="_blank">{{item.title}}</a>
+                        <router-link :to="{name:'item',query:{itemId:item.sku_id}}">{{item.title}}</router-link>
                         <ul class="attribute">
                           <li>{{item.spec_json.show_name}}</li>
                         </ul>
@@ -52,7 +52,7 @@
                         <span class="down":class="{'down-disabled':item.count <= 1}" @click="supCount(item)">-</span>
                         <span class="num">
                           <input type="text" style="display: inline-block;" :value="item.count">
-                          <ul><
+                          <ul>
                             <li>1</li>
                             <li>2</li>
                           </ul>

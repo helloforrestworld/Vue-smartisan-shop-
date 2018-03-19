@@ -10,7 +10,7 @@
           <span class="dialog-close png" @click = "closePrompt"></span>
         </div>
         <div class="dialog-con js-dialog-container">
-          <div class="confirm-msg">商品已达到最大可购买数量，无法继续添加</div>
+          <div class="confirm-msg">{{tips}}</div>
         </div>
         <div class="dialog-btn-wrap clear">
           <div class="blue-main-btn normal-main-btn js-dialog-done">
@@ -24,6 +24,9 @@
 <script>
 export default {
   name: "prompt",
+  props:{
+    tips:String
+  },
   data: () => ({
 
   }),

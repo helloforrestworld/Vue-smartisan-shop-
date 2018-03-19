@@ -99,6 +99,9 @@ let store = new Vuex.Store({
     closePrompt(state){//关闭对话框
       state.maxOff = false
     },
+    openPrompt(state){
+      state.maxOff = true
+    },
     showCar(state){ //购物车显示
       state.carShow = true
     },
