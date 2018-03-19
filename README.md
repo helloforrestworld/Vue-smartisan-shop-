@@ -1,21 +1,23 @@
-# vue-hamer-shop
+﻿# 锤子商城
 
-> A Vue.js project
+标签（空格分隔）： 作业总结
+###商品页
+![商品页][1]
+###购物车页面
+![购物车页][2]
+###商品详情
+![商品详情页][3]
+###提交订单页
+![提交订单页][4]
+###支付页
+![支付页][5]
+###个人账户页
+![个人账户页][6]
 
-## Build Setup
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+  [1]: https://ws1.sinaimg.cn/large/e8323205gy1fphv327vnhg20y60jlnge.jpg
+  [2]: https://ws1.sinaimg.cn/large/e8323205gy1fphv3lp6umg20y60jl12y.jpg
+  [3]: https://ws1.sinaimg.cn/large/e8323205gy1fphv466e5ig20y60jlqh7.jpg
+  [4]: https://ws1.sinaimg.cn/large/e8323205gy1fphv4x2oryg20y60jl1ky.jpg
+  [5]: https://ws1.sinaimg.cn/large/e8323205gy1fphv51opmeg20y60jlb0h.jpg
+  [6]: https://ws1.sinaimg.cn/large/e8323205gy1fphv563qgdg20y60jl4l7.jpg

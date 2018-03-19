@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-    <prompt v-show="maxOff"></prompt>
+    <prompt v-show="maxOff" tips="商品数量已到上限,不能继续添加"></prompt>
   </div>
 </template>
 <script>
