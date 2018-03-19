@@ -91,9 +91,6 @@ export default {
       this.$store.commit('delCarPanelData',data)
     },
     showCar(ev){//显示购物车
-      if(ev.offsetX < -300){
-        return
-      }
       this.$store.commit('showCar')
     },
     hideCar(ev){//隐藏购物车
