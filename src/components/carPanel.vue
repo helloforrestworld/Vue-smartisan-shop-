@@ -10,20 +10,20 @@
         <div class="empty" v-if="!calTotalCount">
           <h3>购物车为空</h3>
           <p>您还没有选购任何商品，现在前往商城选购吧!</p>
-        </div>
-        <div class="full" v-else>
-          <div class="nav-cart-items">
-            <ul>
-              <li class="clear" v-for="item in carPanelData">
-                <div class="cart-item js-cart-item cart-item-sell">
-                  <div class="cart-item-inner">
-                    <div class="item-thumb">
-                      <img :src="item.ali_image + '?x-oss-process=image/resize,w_206/quality,Q_80/format,webp'">
-                    </div>
-                    <div class="item-desc">
-                      <div class="cart-cell">
-                        <h4> 
-                          <a href="#/item/100027401">{{item.title}}</a>
+                      </div>
+                      <div class="full" v-else>
+                        <div class="nav-cart-items">
+                          <ul>
+                            <li class="clear" v-for="item in carPanelData">
+                              <div class="cart-item js-cart-item cart-item-sell">
+                                <div class="cart-item-inner">
+                                  <div class="item-thumb">
+                                    <img :src="item.ali_image + '?x-oss-process=image/resize,w_206/quality,Q_80/format,webp'">
+                                  </div>
+                                  <div class="item-desc">
+                                    <div class="cart-cell">
+                                      <h4>
+                                      <a href="#/item/100027401">{{item.title}}</a>
                         </h4>
                         <p class="attrs">
                           <span>{{item.spec_json.show_name}}</span>
@@ -109,12 +109,12 @@ export default {
       let ball = document.getElementsByClassName('mask-item')[0]//小球
       let x = rectEl.left - rect.left  - rect.width/2//购物车 与 按钮 横向距离距离
       let y = rect.top - rectEl.top   //购物车 与 按钮 纵向距离距离
-      
-      
+
+
       el.style.transform = 'translate3d(0,'+y+'px,0)'
       ball.style.transform = 'translate3d(-'+x+'px,0,0)'
       ball.src = this.ball.img
-      
+
     },
     enter(el){
       let a = el.offsetHeight //让浏览器主动渲染一下
